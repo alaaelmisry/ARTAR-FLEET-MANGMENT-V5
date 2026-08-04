@@ -1,609 +1,1975 @@
 /*=========================================================
-                DATA MANAGER
+                ATP FLEET MANAGEMENT
+                SCRIPT.JS
+                PART 1
+        CONSTANTS & DOM ELEMENTS
 =========================================================*/
 
-function getVehicleById(id){
 
-    return vehicles.find(v=>v.id===Number(id));
-
-}
-
-
-function getVehiclesByType(type){
-
-    return vehicles.filter(v=>v.type===type);
-
-}
-
-
-function getVehicleTypes(){
-
-    return [
-
-        "PRIVATE",
-
-        "TRUCKS",
-
-        "EQUIPMENT",
-
-        "SPECIAL",
-
-        "GENERATORS"
-
-    ];
-
-}
-
-
-function getTypeName(type){
-
-    switch(type){
-
-        case "PRIVATE":
-            return "المركبات الصغيرة";
-
-        case "TRUCKS":
-            return "رؤوس الشاحنات والقاطرات";
-
-        case "EQUIPMENT":
-            return "المعدات الكبيرة والصغيرة";
-
-        case "SPECIAL":
-            return "السيارات المتخصصة";
-
-        case "GENERATORS":
-            return "المولدات والمضخات";
-
-        default:
-            return "";
-
-    }
-
-}
-
-
-function updateVehicle(id,data){
-
-    const vehicle=getVehicleById(id);
-
-    if(!vehicle) return false;
-
-
-    Object.assign(vehicle,data);
-
-    vehicle.lastUpdate=new Date().toISOString();
-
-    return true;
-
-}
-
-
-function resetForm(){
-
-    vehicleType.value="";
-
-    vehicleNumber.innerHTML=
-
-    "<option value=''>اختر</option>";
-
-    driverName.textContent="---";
-
-    vehicleStatus.value="working";
-
-    driverStatus.value="present";
-
-    maintenanceStatus.value="none";
-
-    vehicleNotes.value="";
-
-}
 /*=========================================================
-            VEHICLE REGISTRATION MODULE
+                    CONSTANTS
 =========================================================*/
 
-function loadVehicleNumbers(){
+const ADMIN_PASSWORD = "1234";
 
-    vehicleNumber.innerHTML =
-    "<option value=''>اختر</option>";
 
-    driverName.textContent="---";
+const VEHICLE_TYPES = {
 
-    if(vehicleType.value==="") return;
+    PRIVATE:"PRIVATE",
 
-    const list =
-    getVehiclesByType(vehicleType.value);
+    TRUCKS:"TRUCKS",
 
-    list.forEach(vehicle=>{
+    EQUIPMENT:"EQUIPMENT",
 
-        const option =
-        document.createElement("option");
+    SPECIAL:"SPECIAL",
 
-        option.value =
-        vehicle.id;
+    GENERATORS:"GENERATORS"
 
-        option.textContent =
-        vehicle.number;
+};
 
-        vehicleNumber.appendChild(option);
 
-    });
+
+const STATUS = {
+
+    WORKING:"working",
+
+    STOPPED:"stopped"
+
+};
+
+
+
+const DRIVER_STATUS = {
+
+    PRESENT:"present",
+
+    ABSENT:"absent",
+
+    SICK:"sick",
+
+    ANNUAL:"annual"
+
+};
+
+
+
+const MAINTENANCE_STATUS = {
+
+    NONE:"none",
+
+    PERIODIC:"periodic",
+
+    EMERGENCY:"emergency"
+
+};
+
+
+
+
+/*=========================================================
+                    DOM ELEMENTS
+=========================================================*/
+
+
+const homePage =
+document.getElementById("homePage");
+
+
+const registerPage =
+document.getElementById("registerPage");
+
+
+const viewPage =
+document.getElementById("viewPage");
+
+
+
+const vehicleType =
+document.getElementById("vehicleType");
+
+
+const vehicleNumber =
+document.getElementById("vehicleNumber");
+
+
+const driverName =
+document.getElementById("driverName");
+
+
+const driverStatus =
+document.getElementById("driverStatus");
+
+
+const vehicleStatus =
+document.getElementById("vehicleStatus");
+
+
+const maintenanceStatus =
+document.getElementById("maintenanceStatus");
+
+
+const vehicleNotes =
+document.getElementById("vehicleNotes");
+
+
+
+const todayName =
+document.getElementById("todayName");
+
+
+const todayDate =
+document.getElementById("todayDate");
+
+
+const todayTime =
+document.getElementById("todayTime");
+
+
+
+/*=========================================================
+                    END PART 1
+=========================================================*/
+/*=========================================================
+                NAVIGATION MODULE
+                PART 2
+=========================================================*/
+
+
+/*=========================================================
+                إظهار صفحة تسجيل الحالة
+=========================================================*/
+
+function showRegisterPage(){
+
+    hideAllPages();
+
+    registerPage.style.display="block";
 
 }
 
 
-function loadVehicleInformation(){
 
-    const vehicle =
-    getVehicleById(vehicleNumber.value);
+/*=========================================================
+                العودة للرئيسية
+=========================================================*/
 
-    if(!vehicle){
+function goHome(){
 
-        driverName.textContent="---";
+    hideAllPages();
 
-        return;
-
-    }
-
-    driverName.textContent =
-    vehicle.driver;
-
-    vehicleStatus.value =
-    vehicle.status;
-
-    driverStatus.value =
-    vehicle.driverStatus;
-
-    maintenanceStatus.value =
-    vehicle.maintenance;
-
-    vehicleNotes.value =
-    vehicle.notes;
-
-}
-
-
-function saveVehicleReport(){
-
-    const vehicle =
-    getVehicleById(vehicleNumber.value);
-
-    if(!vehicle){
-
-        alert("يرجى اختيار المركبة");
-
-        return;
-
-    }
-
-    updateVehicle(vehicle.id,{
-
-        status:
-        vehicleStatus.value,
-
-        driverStatus:
-        driverStatus.value,
-
-        maintenance:
-        maintenanceStatus.value,
-
-        notes:
-        vehicleNotes.value.trim()
-
-    });
-
-    alert("تم حفظ البيانات بنجاح");
-
-    renderVehicles();
+    homePage.style.display="block";
 
     resetForm();
 
 }
 
 
-vehicleType.addEventListener(
 
-    "change",
+/*=========================================================
+                إظهار صفحة العرض
+=========================================================*/
 
-    loadVehicleNumbers
+function showViewPage(){
 
-);
+    hideAllPages();
+
+    viewPage.style.display="block";
+
+    renderVehicles();
+
+}
 
 
-vehicleNumber.addEventListener(
 
-    "change",
+/*=========================================================
+                إخفاء جميع الصفحات
+=========================================================*/
 
-    loadVehicleInformation
+function hideAllPages(){
 
-);
+    homePage.style.display="none";
+
+    registerPage.style.display="none";
+
+    viewPage.style.display="none";
+
+}
+
+
+
+/*=========================================================
+                فتح وإغلاق الأقسام
+=========================================================*/
+
+function toggleSection(id){
+
+    const section =
+    document.getElementById(id);
+
+
+    if(!section) return;
+
+
+    if(section.style.display==="none"
+       ||
+       section.style.display===""){
+
+        section.style.display="block";
+
+    }
+
+    else{
+
+        section.style.display="none";
+
+    }
+
+}
+
+
+
+/*=========================================================
+                    END PART 2
+=========================================================*/
+/*=========================================================
+                CLOCK MODULE
+                PART 3
+=========================================================*/
+
+
+/*=========================================================
+                أسماء الأيام بالعربية
+=========================================================*/
+
+const daysArabic = [
+
+    "الأحد",
+
+    "الإثنين",
+
+    "الثلاثاء",
+
+    "الأربعاء",
+
+    "الخميس",
+
+    "الجمعة",
+
+    "السبت"
+
+];
+
+
+
+/*=========================================================
+                تحديث التاريخ والوقت
+=========================================================*/
+
+function updateDateTime(){
+
+
+    const now =
+    new Date();
+
+
+
+    if(todayName){
+
+        todayName.textContent =
+        daysArabic[now.getDay()];
+
+    }
+
+
+
+    if(todayDate){
+
+        todayDate.textContent =
+        now.toLocaleDateString(
+            "ar-SA",
+            {
+                year:"numeric",
+                month:"long",
+                day:"numeric"
+            }
+        );
+
+    }
+
+
+
+    if(todayTime){
+
+        todayTime.textContent =
+        now.toLocaleTimeString(
+            "ar-SA",
+            {
+                hour:"2-digit",
+                minute:"2-digit",
+                second:"2-digit"
+            }
+        );
+
+    }
+
+
+}
+
+
+
+/*=========================================================
+                تشغيل الساعة
+=========================================================*/
+
+function startClock(){
+
+    updateDateTime();
+
+
+    setInterval(
+
+        updateDateTime,
+
+        1000
+
+    );
+
+}
+
+
+
+/*=========================================================
+                    END PART 3
+=========================================================*/
+/*=========================================================
+                DATA MANAGER MODULE
+                PART 4
+=========================================================*/
+
+
+/*=========================================================
+                البحث عن مركبة بواسطة ID
+=========================================================*/
+
+function getVehicleById(id){
+
+    return vehicles.find(
+
+        vehicle =>
+        vehicle.id === Number(id)
+
+    );
+
+}
+
+
+
+/*=========================================================
+                جلب المركبات حسب النوع
+=========================================================*/
+
+function getVehiclesByType(type){
+
+    return vehicles.filter(
+
+        vehicle =>
+        vehicle.type === type
+
+    );
+
+}
+
+
+
+/*=========================================================
+                تحديث بيانات مركبة
+=========================================================*/
+
+function updateVehicle(id,data){
+
+
+    const vehicle =
+    getVehicleById(id);
+
+
+
+    if(!vehicle){
+
+        return false;
+
+    }
+
+
+
+    Object.assign(
+
+        vehicle,
+
+        data
+
+    );
+
+
+
+    vehicle.lastUpdate =
+    new Date().toISOString();
+
+
+
+    return true;
+
+}
+
+
+
+/*=========================================================
+                إعادة ضبط النموذج
+=========================================================*/
+
+function resetForm(){
+
+
+    if(vehicleType){
+
+        vehicleType.value="";
+
+    }
+
+
+
+    if(vehicleNumber){
+
+        vehicleNumber.innerHTML =
+        `
+        <option value="">
+        اختر
+        </option>
+        `;
+
+    }
+
+
+
+    if(driverName){
+
+        driverName.textContent =
+        "---";
+
+    }
+
+
+
+    if(vehicleStatus){
+
+        vehicleStatus.value =
+        STATUS.WORKING;
+
+    }
+
+
+
+    if(driverStatus){
+
+        driverStatus.value =
+        DRIVER_STATUS.PRESENT;
+
+    }
+
+
+
+    if(maintenanceStatus){
+
+        maintenanceStatus.value =
+        MAINTENANCE_STATUS.NONE;
+
+    }
+
+
+
+    if(vehicleNotes){
+
+        vehicleNotes.value =
+        "";
+
+    }
+
+
+}
+
+
+
+/*=========================================================
+                اسم النوع بالعربية
+=========================================================*/
+
+function getTypeName(type){
+
+
+    switch(type){
+
+
+        case VEHICLE_TYPES.PRIVATE:
+
+            return "المركبات الصغيرة";
+
+
+
+        case VEHICLE_TYPES.TRUCKS:
+
+            return "رؤوس الشاحنات والقاطرات";
+
+
+
+        case VEHICLE_TYPES.EQUIPMENT:
+
+            return "المعدات الكبيرة والصغيرة";
+
+
+
+        case VEHICLE_TYPES.SPECIAL:
+
+            return "السيارات المتخصصة";
+
+
+
+        case VEHICLE_TYPES.GENERATORS:
+
+            return "المولدات والمضخات";
+
+
+
+        default:
+
+            return "";
+
+    }
+
+}
+
+
+
+/*=========================================================
+                    END PART 4
+=========================================================*/
+/*=========================================================
+            VEHICLE REGISTRATION MODULE
+            PART 5
+=========================================================*/
+
+
+/*=========================================================
+                تحميل أرقام المركبات
+=========================================================*/
+
+function loadVehicleNumbers(){
+
+
+    if(!vehicleNumber){
+
+        return;
+
+    }
+
+
+
+    vehicleNumber.innerHTML =
+    `
+    <option value="">
+    اختر
+    </option>
+    `;
+
+
+
+    if(driverName){
+
+        driverName.textContent =
+        "---";
+
+    }
+
+
+
+    if(!vehicleType.value){
+
+        return;
+
+    }
+
+
+
+    const list =
+    getVehiclesByType(
+        vehicleType.value
+    );
+
+
+
+    list.forEach(vehicle=>{
+
+
+        const option =
+        document.createElement(
+            "option"
+        );
+
+
+
+        option.value =
+        vehicle.id;
+
+
+
+        option.textContent =
+        vehicle.number;
+
+
+
+        vehicleNumber.appendChild(
+            option
+        );
+
+
+    });
+
+
+}
+
+
+
+/*=========================================================
+            تحميل بيانات المركبة المختارة
+=========================================================*/
+
+function loadVehicleInformation(){
+
+
+    const vehicle =
+    getVehicleById(
+        vehicleNumber.value
+    );
+
+
+
+    if(!vehicle){
+
+
+        driverName.textContent =
+        "---";
+
+
+        return;
+
+    }
+
+
+
+    driverName.textContent =
+    vehicle.driver;
+
+
+
+    vehicleStatus.value =
+    vehicle.status;
+
+
+
+    driverStatus.value =
+    vehicle.driverStatus;
+
+
+
+    maintenanceStatus.value =
+    vehicle.maintenance;
+
+
+
+    vehicleNotes.value =
+    vehicle.notes || "";
+
+
+}
+
+
+
+/*=========================================================
+                حفظ حالة المركبة
+=========================================================*/
+
+function saveVehicleReport(){
+
+
+    const vehicle =
+    getVehicleById(
+        vehicleNumber.value
+    );
+
+
+
+    if(!vehicle){
+
+
+        alert(
+            "يرجى اختيار المركبة"
+        );
+
+
+        return;
+
+    }
+
+
+
+    updateVehicle(
+
+        vehicle.id,
+
+        {
+
+
+            status:
+            vehicleStatus.value,
+
+
+
+            driverStatus:
+            driverStatus.value,
+
+
+
+            maintenance:
+            maintenanceStatus.value,
+
+
+
+            notes:
+            vehicleNotes.value.trim()
+
+
+        }
+
+    );
+
+
+
+    alert(
+        "تم حفظ البيانات بنجاح"
+    );
+
+
+
+    renderVehicles();
+
+
+
+    resetForm();
+
+
+}
+
+
+
+/*=========================================================
+                ربط الحقول
+=========================================================*/
+
+
+if(vehicleType){
+
+
+    vehicleType.addEventListener(
+
+        "change",
+
+        loadVehicleNumbers
+
+    );
+
+
+}
+
+
+
+if(vehicleNumber){
+
+
+    vehicleNumber.addEventListener(
+
+        "change",
+
+        loadVehicleInformation
+
+    );
+
+
+}
+
+
+
+/*=========================================================
+                    END PART 5
+=========================================================*/
 /*=========================================================
                 STATISTICS MODULE
+                PART 6
+=========================================================*/
+
+
+/*=========================================================
+                حساب إحصائيات القسم
 =========================================================*/
 
 function getSectionStatistics(type){
 
+
     const list =
     getVehiclesByType(type);
 
-    return{
+
+
+    return {
+
 
         total:
+
         list.length,
 
+
+
         working:
-        list.filter(v=>v.status==="working").length,
+
+        list.filter(
+
+            vehicle =>
+            vehicle.status === STATUS.WORKING
+
+        ).length,
+
+
 
         stopped:
-        list.filter(v=>v.status==="stopped").length
+
+        list.filter(
+
+            vehicle =>
+            vehicle.status === STATUS.STOPPED
+
+        ).length
+
 
     };
 
+
 }
 
+
+
+/*=========================================================
+                تحديث بطاقة القسم
+=========================================================*/
 
 function updateSectionCard(type,prefix){
 
-    const data =
+
+    const statistics =
     getSectionStatistics(type);
 
-    document.getElementById(
 
+
+    const total =
+    document.getElementById(
         prefix+"Total"
+    );
 
-    ).textContent =
-    data.total;
 
+
+    const working =
     document.getElementById(
-
         prefix+"Working"
+    );
 
-    ).textContent =
-    data.working;
 
+
+    const stopped =
     document.getElementById(
-
         prefix+"Stopped"
+    );
 
-    ).textContent =
-    data.stopped;
+
+
+    if(total){
+
+        total.textContent =
+        statistics.total;
+
+    }
+
+
+
+    if(working){
+
+        working.textContent =
+        statistics.working;
+
+    }
+
+
+
+    if(stopped){
+
+        stopped.textContent =
+        statistics.stopped;
+
+    }
+
 
 }
 
+
+
+/*=========================================================
+                تحديث جميع الإحصائيات
+=========================================================*/
 
 function updateStatistics(){
 
-    const sections=[
+
+    const sections = [
+
 
         {
-            type:"PRIVATE",
-            prefix:"private"
+
+            type:
+            VEHICLE_TYPES.PRIVATE,
+
+            prefix:
+            "private"
+
         },
 
-        {
-            type:"TRUCKS",
-            prefix:"trucks"
-        },
 
         {
-            type:"EQUIPMENT",
-            prefix:"equipment"
+
+            type:
+            VEHICLE_TYPES.TRUCKS,
+
+            prefix:
+            "trucks"
+
         },
 
-        {
-            type:"SPECIAL",
-            prefix:"special"
-        },
 
         {
-            type:"GENERATORS",
-            prefix:"generator"
+
+            type:
+            VEHICLE_TYPES.EQUIPMENT,
+
+            prefix:
+            "equipment"
+
+        },
+
+
+        {
+
+            type:
+            VEHICLE_TYPES.SPECIAL,
+
+            prefix:
+            "special"
+
+        },
+
+
+        {
+
+            type:
+            VEHICLE_TYPES.GENERATORS,
+
+            prefix:
+            "generator"
+
         }
+
 
     ];
 
-    sections.forEach(section=>{
 
-        updateSectionCard(
 
-            section.type,
+    sections.forEach(
 
-            section.prefix
+        section=>{
 
-        );
 
-    });
+            updateSectionCard(
+
+                section.type,
+
+                section.prefix
+
+            );
+
+
+        }
+
+    );
+
 
 }
+
+
+
 /*=========================================================
-                    RENDER MODULE
+                    END PART 6
+=========================================================*/
+/*=========================================================
+                RENDER MODULE
+                PART 7
+=========================================================*/
+
+
+/*=========================================================
+                عرض جميع المركبات
 =========================================================*/
 
 function renderVehicles(){
 
-    const sections=[
+
+    const sections = [
+
 
         {
-            type:"PRIVATE",
-            container:"privateSection"
+
+            type:
+            VEHICLE_TYPES.PRIVATE,
+
+            container:
+            "privateSection"
+
         },
 
-        {
-            type:"TRUCKS",
-            container:"trucksSection"
-        },
 
         {
-            type:"EQUIPMENT",
-            container:"equipmentSection"
+
+            type:
+            VEHICLE_TYPES.TRUCKS,
+
+            container:
+            "trucksSection"
+
         },
 
-        {
-            type:"SPECIAL",
-            container:"specialSection"
-        },
 
         {
-            type:"GENERATORS",
-            container:"generatorSection"
+
+            type:
+            VEHICLE_TYPES.EQUIPMENT,
+
+            container:
+            "equipmentSection"
+
+        },
+
+
+        {
+
+            type:
+            VEHICLE_TYPES.SPECIAL,
+
+            container:
+            "specialSection"
+
+        },
+
+
+        {
+
+            type:
+            VEHICLE_TYPES.GENERATORS,
+
+            container:
+            "generatorSection"
+
         }
+
 
     ];
 
-    sections.forEach(section=>{
 
-        renderSection(
 
-            section.type,
+    sections.forEach(
 
-            section.container
+        section=>{
 
-        );
 
-    });
+            renderSection(
+
+                section.type,
+
+                section.container
+
+            );
+
+
+        }
+
+    );
+
+
 
     updateStatistics();
 
-}
-
-
-
-function renderSection(type,containerId){
-
-    const container=
-
-    document.getElementById(containerId);
-
-    if(!container) return;
-
-    container.innerHTML="";
-
-    const list=
-
-    getVehiclesByType(type);
-
-    list.forEach(vehicle=>{
-
-        container.appendChild(
-
-            createVehicleRow(vehicle)
-
-        );
-
-    });
-
-}
-
-
-
-function createVehicleRow(vehicle){
-
-    const row=
-
-    document.createElement("div");
-
-    row.className="vehicle-card";
-
-
-    row.innerHTML=`
-
-<div class="vehicle-status ${getVehicleStatusClass(vehicle.status)}">
-
-${getVehicleStatusText(vehicle.status)}
-
-</div>
-
-<div class="vehicle-number">
-
-${vehicle.number}
-
-</div>
-
-<div class="vehicle-driver">
-
-${vehicle.driver}
-
-</div>
-
-<div class="vehicle-driver-status ${getDriverStatusClass(vehicle.driverStatus)}">
-
-${getDriverStatusText(vehicle.driverStatus)}
-
-</div>
-
-<div class="vehicle-maintenance ${getMaintenanceClass(vehicle.maintenance)}">
-
-${getMaintenanceText(vehicle.maintenance)}
-
-</div>
-
-<div class="vehicle-update">
-
-${formatLastUpdate(vehicle.lastUpdate)}
-
-</div>
-
-`;
-
-    return row;
 
 }
 
 
 
 /*=========================================================
-                TEXT HELPERS
+                عرض قسم واحد
+=========================================================*/
+
+function renderSection(type,containerId){
+
+
+    const container =
+    document.getElementById(
+        containerId
+    );
+
+
+
+    if(!container){
+
+        return;
+
+    }
+
+
+
+    container.innerHTML =
+    "";
+
+
+
+    const list =
+    getVehiclesByType(type);
+
+
+
+    list.forEach(
+
+        vehicle=>{
+
+
+            container.appendChild(
+
+                createVehicleRow(vehicle)
+
+            );
+
+
+        }
+
+    );
+
+
+}
+
+
+
+/*=========================================================
+                إنشاء صف المركبة
+=========================================================*/
+
+function createVehicleRow(vehicle){
+
+
+    const row =
+    document.createElement(
+        "div"
+    );
+
+
+
+    row.className =
+    "vehicle-card";
+
+
+
+    row.innerHTML = `
+
+
+    <div class="vehicle-status 
+    ${getVehicleStatusClass(vehicle.status)}">
+
+        ${getVehicleStatusText(vehicle.status)}
+
+    </div>
+
+
+
+    <div class="vehicle-number">
+
+        ${vehicle.number}
+
+    </div>
+
+
+
+    <div class="vehicle-driver">
+
+        ${vehicle.driver}
+
+    </div>
+
+
+
+    <div class="vehicle-driver-status
+    ${getDriverStatusClass(vehicle.driverStatus)}">
+
+        ${getDriverStatusText(vehicle.driverStatus)}
+
+    </div>
+
+
+
+    <div class="vehicle-maintenance
+    ${getMaintenanceClass(vehicle.maintenance)}">
+
+        ${getMaintenanceText(vehicle.maintenance)}
+
+    </div>
+
+
+
+    <div class="vehicle-update">
+
+        ${formatLastUpdate(vehicle.lastUpdate)}
+
+    </div>
+
+
+    `;
+
+
+
+    return row;
+
+
+}
+
+
+
+/*=========================================================
+                    END PART 7
+=========================================================*/
+/*=========================================================
+                TEXT HELPERS MODULE
+                PART 8
+=========================================================*/
+
+
+/*=========================================================
+                نص حالة المركبة
 =========================================================*/
 
 function getVehicleStatusText(status){
 
-    return status==="working"
 
-    ? "تعمل"
+    if(status === STATUS.WORKING){
 
-    : "لا تعمل";
-
-}
-
-
-
-function getDriverStatusText(status){
-
-    switch(status){
-
-        case "present":
-            return "حاضر";
-
-        case "absent":
-            return "غائب";
-
-        case "sick":
-            return "إجازة مرضية";
-
-        case "annual":
-            return "إجازة سنوية";
-
-        default:
-            return "-";
+        return "تعمل";
 
     }
 
-}
 
+    if(status === STATUS.STOPPED){
 
-
-function getMaintenanceText(status){
-
-    switch(status){
-
-        case "none":
-            return "لا يوجد";
-
-        case "periodic":
-            return "صيانة دورية";
-
-        case "emergency":
-            return "صيانة طارئة";
-
-        default:
-            return "-";
+        return "لا تعمل";
 
     }
+
+
+    return "-";
+
 
 }
 
 
 
 /*=========================================================
-                CSS CLASSES
+                نص حالة السائق
+=========================================================*/
+
+function getDriverStatusText(status){
+
+
+    switch(status){
+
+
+        case DRIVER_STATUS.PRESENT:
+
+            return "حاضر";
+
+
+
+        case DRIVER_STATUS.ABSENT:
+
+            return "غائب";
+
+
+
+        case DRIVER_STATUS.SICK:
+
+            return "إجازة مرضية";
+
+
+
+        case DRIVER_STATUS.ANNUAL:
+
+            return "إجازة سنوية";
+
+
+
+        default:
+
+            return "-";
+
+
+    }
+
+
+}
+
+
+
+/*=========================================================
+                نص حالة الصيانة
+=========================================================*/
+
+function getMaintenanceText(status){
+
+
+    switch(status){
+
+
+        case MAINTENANCE_STATUS.NONE:
+
+            return "لا يوجد";
+
+
+
+        case MAINTENANCE_STATUS.PERIODIC:
+
+            return "صيانة دورية";
+
+
+
+        case MAINTENANCE_STATUS.EMERGENCY:
+
+            return "صيانة طارئة";
+
+
+
+        default:
+
+            return "-";
+
+
+    }
+
+
+}
+
+
+
+/*=========================================================
+                    END PART 8
+=========================================================*/
+/*=========================================================
+                CSS CLASSES HELPERS MODULE
+                PART 9
+=========================================================*/
+
+
+/*=========================================================
+                كلاس حالة المركبة
 =========================================================*/
 
 function getVehicleStatusClass(status){
 
-    return status==="working"
-
-    ? "status-working"
-
-    : "status-stopped";
-
-}
-
-
-
-function getDriverStatusClass(status){
 
     switch(status){
 
-        case "present":
-            return "driver-present";
 
-        case "absent":
-            return "driver-absent";
+        case STATUS.WORKING:
 
-        case "sick":
-            return "driver-sick";
+            return "status-working";
 
-        case "annual":
-            return "driver-annual";
+
+
+        case STATUS.STOPPED:
+
+            return "status-stopped";
+
+
 
         default:
+
             return "";
+
 
     }
 
-}
-
-
-
-function getMaintenanceClass(status){
-
-    switch(status){
-
-        case "none":
-            return "maintenance-none";
-
-        case "periodic":
-            return "maintenance-periodic";
-
-        case "emergency":
-            return "maintenance-emergency";
-
-        default:
-            return "";
-
-    }
 
 }
 
 
 
 /*=========================================================
-                LAST UPDATE
+                كلاس حالة السائق
+=========================================================*/
+
+function getDriverStatusClass(status){
+
+
+    switch(status){
+
+
+        case DRIVER_STATUS.PRESENT:
+
+            return "driver-present";
+
+
+
+        case DRIVER_STATUS.ABSENT:
+
+            return "driver-absent";
+
+
+
+        case DRIVER_STATUS.SICK:
+
+            return "driver-sick";
+
+
+
+        case DRIVER_STATUS.ANNUAL:
+
+            return "driver-annual";
+
+
+
+        default:
+
+            return "";
+
+
+    }
+
+
+}
+
+
+
+/*=========================================================
+                كلاس حالة الصيانة
+=========================================================*/
+
+function getMaintenanceClass(status){
+
+
+    switch(status){
+
+
+        case MAINTENANCE_STATUS.NONE:
+
+            return "maintenance-none";
+
+
+
+        case MAINTENANCE_STATUS.PERIODIC:
+
+            return "maintenance-periodic";
+
+
+
+        case MAINTENANCE_STATUS.EMERGENCY:
+
+            return "maintenance-emergency";
+
+
+
+        default:
+
+            return "";
+
+
+    }
+
+
+}
+
+
+
+/*=========================================================
+                    END PART 9
+=========================================================*/
+/*=========================================================
+                LAST UPDATE MODULE
+                PART 10
+=========================================================*/
+
+
+/*=========================================================
+                تنسيق آخر تحديث
 =========================================================*/
 
 function formatLastUpdate(value){
 
-    if(!value)
+
+    if(!value){
 
         return "-";
 
-    const date=new Date(value);
+    }
 
-    if(isNaN(date))
+
+
+    const updateDate =
+    new Date(value);
+
+
+
+    if(isNaN(updateDate)){
 
         return "-";
 
-    return date.toLocaleString("ar-SA",{
+    }
 
-        year:"2-digit",
 
-        month:"2-digit",
 
-        day:"2-digit",
+    const now =
+    new Date();
 
-        hour:"2-digit",
 
-        minute:"2-digit"
 
-    });
+    const difference =
+    now - updateDate;
+
+
+
+    const seconds =
+    Math.floor(
+        difference / 1000
+    );
+
+
+
+    const minutes =
+    Math.floor(
+        seconds / 60
+    );
+
+
+
+    const hours =
+    Math.floor(
+        minutes / 60
+    );
+
+
+
+    const days =
+    Math.floor(
+        hours / 24
+    );
+
+
+
+    if(days > 0){
+
+        return days + " D";
+
+    }
+
+
+
+    if(hours > 0){
+
+        return hours + " H";
+
+    }
+
+
+
+    if(minutes > 0){
+
+        return minutes + " M";
+
+    }
+
+
+
+    return seconds + " S";
+
 
 }
+
+
+
+/*=========================================================
+                تحديث أوقات العرض
+=========================================================*/
+
+function refreshUpdateTimes(){
+
+
+    const elements =
+    document.querySelectorAll(
+        ".vehicle-update"
+    );
+
+
+
+    elements.forEach(
+
+        element=>{
+
+
+            const vehicle =
+            element.closest(
+                ".vehicle-card"
+            );
+
+
+
+            if(!vehicle){
+
+                return;
+
+            }
+
+
+        }
+
+    );
+
+
+}
+
+
+
+/*=========================================================
+                    END PART 10
+=========================================================*/
+/*=========================================================
+                PASSWORD MODULE
+                PART 11
+=========================================================*/
+
+
+/*=========================================================
+                التحقق من كلمة المرور
+=========================================================*/
+
+function checkPassword(){
+
+
+    const password =
+    prompt(
+        "أدخل الرقم السري لعرض حالة المركبات"
+    );
+
+
+
+    if(password === ADMIN_PASSWORD){
+
+
+        showViewPage();
+
+
+    }
+
+    else{
+
+
+        if(password !== null){
+
+            alert(
+                "الرقم السري غير صحيح"
+            );
+
+        }
+
+
+    }
+
+
+}
+
+
+
+/*=========================================================
+                تغيير الرقم السري لاحقاً
+=========================================================*/
+
+function changeAdminPassword(){
+
+
+    const oldPassword =
+    prompt(
+        "أدخل الرقم السري الحالي"
+    );
+
+
+
+    if(oldPassword !== ADMIN_PASSWORD){
+
+
+        alert(
+            "الرقم السري الحالي غير صحيح"
+        );
+
+
+        return;
+
+    }
+
+
+
+    const newPassword =
+    prompt(
+        "أدخل الرقم السري الجديد"
+    );
+
+
+
+    if(newPassword){
+
+
+        alert(
+            "تم تغيير الرقم السري. يجب تحديث القيمة داخل الملف"
+        );
+
+
+    }
+
+
+}
+
+
+
+/*=========================================================
+                    END PART 11
+=========================================================*/
+/*=========================================================
+                WHATSAPP MODULE
+                PART 12
+=========================================================*/
+
+
+/*=========================================================
+                حفظ وإرسال التقرير
+=========================================================*/
+
+function saveAndSendReport(){
+
+
+    const vehicle =
+    getVehicleById(
+        vehicleNumber.value
+    );
+
+
+
+    if(!vehicle){
+
+
+        alert(
+            "يرجى اختيار المركبة"
+        );
+
+
+        return;
+
+    }
+
+
+
+    updateVehicle(
+
+        vehicle.id,
+
+        {
+
+
+            status:
+            vehicleStatus.value,
+
+
+
+            driverStatus:
+            driverStatus.value,
+
+
+
+            maintenance:
+            maintenanceStatus.value,
+
+
+
+            notes:
+            vehicleNotes.value.trim()
+
+
+        }
+
+    );
+
+
+
+    const message =
+
+`ATP Fleet Management
+
+المركبة: ${vehicle.number}
+
+السائق: ${vehicle.driver}
+
+حالة المركبة: ${getVehicleStatusText(vehicleStatus.value)}
+
+حالة السائق: ${getDriverStatusText(driverStatus.value)}
+
+الصيانة: ${getMaintenanceText(maintenanceStatus.value)}
+
+الملاحظات:
+${vehicleNotes.value || "لا يوجد"}
+
+وقت التحديث:
+${new Date().toLocaleString("ar-SA")}
+
+`;
+
+
+    const whatsappURL =
+
+    "https://wa.me/?text="
+
+    +
+
+    encodeURIComponent(message);
+
+
+
+    window.open(
+
+        whatsappURL,
+
+        "_blank"
+
+    );
+
+
+
+    renderVehicles();
+
+
+
+    resetForm();
+
+
+}
+
+
+
+/*=========================================================
+                إنشاء رابط واتساب
+=========================================================*/
+
+function openWhatsApp(message){
+
+
+    const url =
+
+    "https://wa.me/?text="
+
+    +
+
+    encodeURIComponent(message);
+
+
+
+    window.open(
+
+        url,
+
+        "_blank"
+
+    );
+
+
+}
+
+
+
+/*=========================================================
+                    END PART 12
+=========================================================*/
+/*=========================================================
+                STARTUP MODULE
+                PART 13
+=========================================================*/
+
+
+/*=========================================================
+                تشغيل المشروع
+=========================================================*/
+
+function initializeApp(){
+
+
+    hideAllPages();
+
+
+
+    homePage.style.display =
+    "block";
+
+
+
+    startClock();
+
+
+
+    renderVehicles();
+
+
+
+}
+
+
+
+/*=========================================================
+                تشغيل بعد تحميل الصفحة
+=========================================================*/
+
+document.addEventListener(
+
+    "DOMContentLoaded",
+
+    function(){
+
+
+        initializeApp();
+
+
+    }
+
+);
+
+
+
+/*=========================================================
+                    END PART 13
+=========================================================*/
