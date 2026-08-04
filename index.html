@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ATP Fleet Management</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<!-- ===================================================== -->
+<!-- الصفحة الرئيسية -->
+<!-- ===================================================== -->
+
+<div id="homePage" class="page">
+
+    <div class="container">
+
+        <div class="logo-container">
+            <img src="logo.png"
+                 class="logo"
+                 alt="ATP Logo">
+        </div>
+
+        <h1>شركة الراشد للتقنية والطاقة</h1>
+
+        <h2>ATP FLEET MANAGEMENT</h2>
+
+        <h3 id="todayName"></h3>
+        <h3 id="todayDate"></h3>
+        <h3 id="todayTime"></h3>
+
+        <button onclick="showRegisterPage()">
+            تسجيل حالة المركبات
+        </button>
+
+        <button onclick="checkPassword()">
+            عرض حالة المركبات
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- صفحة تسجيل حالة المركبات -->
+<!-- ===================================================== -->
+
+<div id="registerPage"
+     class="page"
+     style="display:none;">
+
+<div class="container">
+
+<h2>تسجيل حالة المركبات</h2>
+
+
+
+<!-- ===================================== -->
+<!-- نوع المركبة -->
+<!-- ===================================== -->
+
+<div class="input-card">
+
+<div class="card-title">
+نوع المركبة
+</div>
+
+<div class="card-input">
+
+<select id="vehicleType">
+
+<option value="">اختر</option>
+
+<option value="PRIVATE">
+المركبات الصغيرة
+</option>
+
+<option value="TRUCKS">
+رؤوس الشاحنات والقاطرات
+</option>
+
+<option value="EQUIPMENT">
+المعدات الكبيرة والصغيرة
+</option>
+
+<option value="SPECIAL">
+السيارات المتخصصة
+</option>
+
+<option value="GENERATORS">
+المولدات والمضخات
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================== -->
+<!-- رقم المركبة -->
+<!-- ===================================== -->
+
+<div class="input-card">
+
+<div class="card-title">
+رقم المركبة
+</div>
+
+<div class="card-input">
+
+<select id="vehicleNumber">
+
+<option value="">
+اختر
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================== -->
+<!-- السائق الأساسي -->
+<!-- ===================================== -->
+
+<div class="input-card">
+
+<div class="card-title">
+السائق الأساسي
+</div>
+
+<div class="card-input">
+
+<div id="driverName"
+     class="driver-box">
+
+---
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================== -->
+<!-- حالة السائق -->
+<!-- ===================================== -->
+
+<div class="input-card">
+
+<div class="card-title">
+حالة السائق
+</div>
+
+<div class="card-input">
+
+<select id="driverStatus">
+
+<option value="present">
+حاضر
+</option>
+
+<option value="absent">
+غائب
+</option>
+
+<option value="sick">
+إجازة مرضية
+</option>
+
+<option value="annual">
+إجازة سنوية
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================== -->
+<!-- حالة المركبة -->
+<!-- ===================================== -->
+
+<div class="input-card">
+
+<div class="card-title">
+حالة المركبة
+</div>
+
+<div class="card-input">
+
+<select id="vehicleStatus">
+
+<option value="working">
+تعمل
+</option>
+
+<option value="stopped">
+لا تعمل
+</option>
+
+</select>
+
+</div>
+
+</div>
+<!-- ===================================== -->
+<!-- حالة الصيانة -->
+<!-- ===================================== -->
+
+<div class="input-card">
+
+<div class="card-title">
+حالة الصيانة
+</div>
+
+<div class="card-input">
+
+<select id="maintenanceStatus">
+
+<option value="none">
+لا يوجد
+</option>
+
+<option value="periodic">
+صيانة دورية
+</option>
+
+<option value="emergency">
+صيانة طارئة
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================== -->
+<!-- الملاحظات -->
+<!-- ===================================== -->
+
+<div class="input-card">
+
+<div class="card-title">
+الملاحظات
+</div>
+
+<div class="card-input">
+
+<textarea id="vehicleNotes"
+placeholder="اكتب الملاحظات إن وجدت"></textarea>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================== -->
+<!-- الأزرار -->
+<!-- ===================================== -->
+
+<button onclick="saveAndSendReport()">
+حفظ وإرسال
+</button>
+
+<button onclick="goHome()">
+العودة للرئيسية
+</button>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- صفحة عرض حالة المركبات -->
+<!-- ===================================================== -->
+
+<div id="viewPage"
+class="page"
+style="display:none;">
+
+<div class="container">
+
+<h2>عرض حالة المركبات</h2>
+
+
+
+<!-- ===================================== -->
+<!-- المركبات الصغيرة -->
+<!-- ===================================== -->
+
+<div class="section-card"
+onclick="toggleSection('privateSection')">
+
+المركبات الصغيرة |
+الإجمالي <span id="privateTotal">0</span> |
+تعمل <span id="privateWorking">0</span> |
+لا تعمل <span id="privateStopped">0</span>
+
+</div>
+
+<div id="privateSection"
+class="vehicles-container"
+style="display:none;">
+</div>
+
+
+
+<!-- ===================================== -->
+<!-- الشاحنات -->
+<!-- ===================================== -->
+
+<div class="section-card"
+onclick="toggleSection('trucksSection')">
+
+رؤوس الشاحنات والقاطرات |
+الإجمالي <span id="trucksTotal">0</span> |
+تعمل <span id="trucksWorking">0</span> |
+لا تعمل <span id="trucksStopped">0</span>
+
+</div>
+
+<div id="trucksSection"
+class="vehicles-container"
+style="display:none;">
+</div>
+
+
+
+<!-- ===================================== -->
+<!-- المعدات -->
+<!-- ===================================== -->
+
+<div class="section-card"
+onclick="toggleSection('equipmentSection')">
+
+المعدات الكبيرة والصغيرة |
+الإجمالي <span id="equipmentTotal">0</span> |
+تعمل <span id="equipmentWorking">0</span> |
+لا تعمل <span id="equipmentStopped">0</span>
+
+</div>
+
+<div id="equipmentSection"
+class="vehicles-container"
+style="display:none;">
+</div>
+
+
+
+<!-- ===================================== -->
+<!-- السيارات المتخصصة -->
+<!-- ===================================== -->
+
+<div class="section-card"
+onclick="toggleSection('specialSection')">
+
+السيارات المتخصصة |
+الإجمالي <span id="specialTotal">0</span> |
+تعمل <span id="specialWorking">0</span> |
+لا تعمل <span id="specialStopped">0</span>
+
+</div>
+
+<div id="specialSection"
+class="vehicles-container"
+style="display:none;">
+</div>
+
+
+
+<!-- ===================================== -->
+<!-- المولدات والمضخات -->
+<!-- ===================================== -->
+
+<div class="section-card"
+onclick="toggleSection('generatorSection')">
+
+المولدات والمضخات |
+الإجمالي <span id="generatorTotal">0</span> |
+تعمل <span id="generatorWorking">0</span> |
+لا تعمل <span id="generatorStopped">0</span>
+
+</div>
+
+<div id="generatorSection"
+class="vehicles-container"
+style="display:none;">
+</div>
+
+
+
+<button onclick="goHome()">
+العودة للرئيسية
+</button>
+
+</div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- ملفات المشروع -->
+<!-- ===================================================== -->
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
