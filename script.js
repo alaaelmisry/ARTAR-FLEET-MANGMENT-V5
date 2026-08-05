@@ -1958,30 +1958,32 @@ function openWhatsApp(message){
 /*=========================================================
                 تشغيل المشروع
 =========================================================*/
+async function loadVehiclesFromServer() {
 
-function initializeApp(){
+    const response = await fetch(
+        API_URL + "?action=getVehicles"
+    );
 
+    const data = await response.json();
 
-    hideAllPages();
+    vehicles.length = 0;
 
-
-
-    homePage.style.display =
-    "block";
-
-
-
-    startClock();
-
-
+    data.forEach(vehicle => vehicles.push(vehicle));
 
     renderVehicles();
 
+}
+async function initializeApp(){
 
+    hideAllPages();
+
+    homePage.style.display = "block";
+
+    startClock();
+
+    await loadVehiclesFromServer();
 
 }
-
-
 
 /*=========================================================
                 تشغيل بعد تحميل الصفحة
