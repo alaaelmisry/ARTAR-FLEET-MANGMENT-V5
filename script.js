@@ -63,8 +63,41 @@ const MAINTENANCE_STATUS = {
 
 };
 
+const API_URL =
+"https://script.google.com/macros/s/AKfycbxcpsWtq2IB0nXePZFty9_kX53Dq8ABRYb0uQ_hmqA0Y1NKog8vU3a7wXlQcUoC_qjh/exec";
+async function loadVehiclesFromServer(){
 
+    try{
 
+        const response =
+        await fetch(
+            API_URL + "?action=getVehicles"
+        );
+
+        const data =
+        await response.json();
+
+        vehicles.length = 0;
+
+        data.forEach(vehicle=>{
+
+            vehicles.push(vehicle);
+
+        });
+
+        renderVehicles();
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        alert("تعذر الاتصال بقاعدة البيانات");
+
+    }
+
+}
 
 /*=========================================================
                     DOM ELEMENTS
