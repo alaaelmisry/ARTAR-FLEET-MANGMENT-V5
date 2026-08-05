@@ -5,7 +5,7 @@
 const vehicles = [
 
 /*----------------------------------------
-المركبات الصغيرة
+PICKUP-SEDAN
 ----------------------------------------*/
 
 {
@@ -327,7 +327,7 @@ const vehicles = [
     id:25,
     type:"TRUCKS",
     number:"4554",
-    driver:"ADHAM",
+    driver:"THAQB",
     driverStatus:"present",
     status:"working",
     maintenance:"none",
@@ -366,7 +366,7 @@ const vehicles = [
     id:28,
     type:"TRUCKS",
     number:"4558",
-    driver:"RADI",
+    driver:"ASFOR",
     driverStatus:"present",
     status:"working",
     maintenance:"none",
@@ -400,16 +400,147 @@ const vehicles = [
     notes:"",
     lastUpdate:""
 },
+
+  {
+    id:31,
+    type:"TRUCKS",
+    number:"2932",
+    driver:"MUDATHR",
+    driverStatus:"absent",
+    status:"working",
+    maintenance:"none",
+    reason:"",
+    notes:"",
+    lastUpdate:""
+},
+
+  {
+    id:32,
+    type:"TRUCKS",
+    number:"2950",
+    driver:"NO DRIVER",
+    driverStatus:"absent",
+    status:"working",
+    maintenance:"none",
+    reason:"",
+    notes:"",
+    lastUpdate:""
+},
+
+  {
+    id:33,
+    type:"TRUCKS",
+    number:"4676",
+    driver:"NO DRIVER",
+    driverStatus:"absent",
+    status:"working",
+    maintenance:"none",
+    reason:"",
+    notes:"",
+    lastUpdate:""
+},
+
+  {
+    id:34,
+    type:"TRUCKS",
+    number:"4677",
+    driver:"SAMIULLAH",
+    driverStatus:"absent",
+    status:"working",
+    maintenance:"none",
+    reason:"",
+    notes:"",
+    lastUpdate:""
+},
+
+  {
+    id:35,
+    type:"TRUCKS",
+    number:"2062",
+    driver:"SHEVNDR",
+    driverStatus:"absent",
+    status:"working",
+    maintenance:"none",
+    reason:"",
+    notes:"",
+    lastUpdate:""
+},
+
+  {
+    id:36,
+    type:"TRUCKS",
+    number:"2087",
+    driver:"KISHOR",
+    driverStatus:"absent",
+    status:"working",
+    maintenance:"none",
+    reason:"",
+    notes:"",
+    lastUpdate:""
+},
+
+  {
+    id:37,
+    type:"TRUCKS",
+    number:"6031",
+    driver:"MENAKHAN",
+    driverStatus:"absent",
+    status:"working",
+    maintenance:"none",
+    reason:"",
+    notes:"",
+    lastUpdate:""
+},
+
+  {
+    id:38,
+    type:"TRUCKS",
+    number:"6032",
+    driver:"LAKBA",
+    driverStatus:"absent",
+    status:"working",
+    maintenance:"none",
+    reason:"",
+    notes:"",
+    lastUpdate:""
+},
+
+   {
+    id:39,
+    type:"TRUCKS",
+    number:"6033",
+    driver:"SAFIL",
+    driverStatus:"absent",
+    status:"working",
+    maintenance:"none",
+    reason:"",
+    notes:"",
+    lastUpdate:""
+},
+
+   {
+    id:40,
+    type:"TRUCKS",
+    number:"3162",
+    driver:"NO DRIVER",
+    driverStatus:"absent",
+    status:"working",
+    maintenance:"none",
+    reason:"",
+    notes:"",
+    lastUpdate:""
+},
+  
   
   /*----------------------------------------
 السيارات المتخصصة
 ----------------------------------------*/
 
 {
-    id:68,
+    id:41,
     type:"SPECIAL",
-    number:"SP01",
-    driver:"NO DRIVER",
+    number:"2633",
+    driver:"BILAL",
     driverStatus:"present",
     maintenance:"none",
     status:"working",
@@ -419,10 +550,10 @@ const vehicles = [
 },
 
 {
-    id:69,
+    id:42,
     type:"SPECIAL",
-    number:"SP02",
-    driver:"NO DRIVER",
+    number:"5018",
+    driver:"MFATHY",
     driverStatus:"present",
     maintenance:"none",
     status:"working",
@@ -432,10 +563,10 @@ const vehicles = [
 },
 
 {
-    id:70,
+    id:43,
     type:"SPECIAL",
-    number:"SP03",
-    driver:"NO DRIVER",
+    number:"6758",
+    driver:"MIMRAN",
     driverStatus:"present",
     maintenance:"none",
     status:"working",
@@ -445,10 +576,10 @@ const vehicles = [
 },
 
 {
-    id:71,
+    id:44,
     type:"SPECIAL",
-    number:"SP04",
-    driver:"NO DRIVER",
+    number:"6835",
+    driver:"TILAWAT",
     driverStatus:"present",
     maintenance:"none",
     status:"working",
@@ -458,10 +589,10 @@ const vehicles = [
 },
 
 {
-    id:72,
+    id:45,
     type:"SPECIAL",
-    number:"SP05",
-    driver:"NO DRIVER",
+    number:"6839",
+    driver:"TILAK",
     driverStatus:"present",
     maintenance:"none",
     status:"working",
@@ -471,10 +602,10 @@ const vehicles = [
 },
 
 {
-    id:73,
+    id:46,
     type:"SPECIAL",
-    number:"SP06",
-    driver:"NO DRIVER",
+    number:"7542",
+    driver:"KRISHNA",
     driverStatus:"present",
     maintenance:"none",
     status:"working",
@@ -484,10 +615,10 @@ const vehicles = [
 },
 
 {
-    id:74,
+    id:47,
     type:"SPECIAL",
-    number:"SP07",
-    driver:"NO DRIVER",
+    number:"7668",
+    driver:"MIMRAN",
     driverStatus:"present",
     maintenance:"none",
     status:"working",
@@ -497,10 +628,10 @@ const vehicles = [
 },
 
 {
-    id:75,
+    id:48,
     type:"SPECIAL",
-    number:"SP08",
-    driver:"NO DRIVER",
+    number:"7759",
+    driver:"MBILAL",
     driverStatus:"present",
     maintenance:"none",
     status:"working",
@@ -509,39 +640,80 @@ const vehicles = [
     lastUpdate:""
 },
 
-{
-    id:76,
-    type:"SPECIAL",
-    number:"SP09",
-    driver:"NO DRIVER",
-    driverStatus:"present",
-    maintenance:"none",
-    status:"working",
-    reason:"",
-    notes:"",
-    lastUpdate:""
-},
 
-{
-    id:77,
-    type:"SPECIAL",
-    number:"SP10",
-    driver:"NO DRIVER",
-    driverStatus:"present",
-    maintenance:"none",
-    status:"working",
-    reason:"",
-    notes:"",
-    lastUpdate:""
-},
   /*----------------------------------------
 المولدات والمضخات
 ----------------------------------------*/
 
 {
-    id:78,
+    id:49,
     type:"GENERATORS",
-    number:"GEN01",
+    number:"124KVA",
+    driver:"WAJHAT",
+    driverStatus:"present",
+    maintenance:"none",
+    status:"working",
+    reason:"",
+    notes:"",
+    lastUpdate:""
+},
+
+{
+    id:50,
+    type:"GENERATORS",
+    number:"91KVA",
+    driver:"WAJHAT",
+    driverStatus:"present",
+    maintenance:"none",
+    status:"working",
+    reason:"",
+    notes:"",
+    lastUpdate:""
+},
+
+{
+    id:51,
+    type:"GENERATORS",
+    number:"34KVA",
+    driver:"WAJHAT",
+    driverStatus:"present",
+    maintenance:"none",
+    status:"working",
+    reason:"",
+    notes:"",
+    lastUpdate:""
+},
+
+{
+    id:52,
+    type:"GENERATORS",
+    number:"24KVA",
+    driver:"WAJHAT",
+    driverStatus:"present",
+    maintenance:"none",
+    status:"working",
+    reason:"",
+    notes:"",
+    lastUpdate:""
+},
+
+{
+    id:53,
+    type:"GENERATORS",
+    number:"TOWER LIGHT1",
+    driver:"WAJHAT",
+    driverStatus:"present",
+    maintenance:"none",
+    status:"working",
+    reason:"",
+    notes:"",
+    lastUpdate:""
+},
+
+{
+    id:54,
+    type:"GENERATORS",
+    number:"TOWER LIGHT2",
     driver:"NO OPERATOR",
     driverStatus:"present",
     maintenance:"none",
@@ -552,9 +724,9 @@ const vehicles = [
 },
 
 {
-    id:79,
+    id:55,
     type:"GENERATORS",
-    number:"GEN02",
+    number:"TOWER LIGHT3",
     driver:"NO OPERATOR",
     driverStatus:"present",
     maintenance:"none",
@@ -565,9 +737,9 @@ const vehicles = [
 },
 
 {
-    id:80,
+    id:56,
     type:"GENERATORS",
-    number:"GEN03",
+    number:"TOWER LIGHT4",
     driver:"NO OPERATOR",
     driverStatus:"present",
     maintenance:"none",
@@ -578,9 +750,9 @@ const vehicles = [
 },
 
 {
-    id:81,
+    id:57,
     type:"GENERATORS",
-    number:"GEN04",
+    number:"TOWER LIGHT5",
     driver:"NO OPERATOR",
     driverStatus:"present",
     maintenance:"none",
@@ -590,84 +762,4 @@ const vehicles = [
     lastUpdate:""
 },
 
-{
-    id:82,
-    type:"GENERATORS",
-    number:"GEN05",
-    driver:"NO OPERATOR",
-    driverStatus:"present",
-    maintenance:"none",
-    status:"working",
-    reason:"",
-    notes:"",
-    lastUpdate:""
-},
-
-{
-    id:83,
-    type:"GENERATORS",
-    number:"GEN06",
-    driver:"NO OPERATOR",
-    driverStatus:"present",
-    maintenance:"none",
-    status:"working",
-    reason:"",
-    notes:"",
-    lastUpdate:""
-},
-
-{
-    id:84,
-    type:"GENERATORS",
-    number:"GEN07",
-    driver:"NO OPERATOR",
-    driverStatus:"present",
-    maintenance:"none",
-    status:"working",
-    reason:"",
-    notes:"",
-    lastUpdate:""
-},
-
-{
-    id:85,
-    type:"GENERATORS",
-    number:"GEN08",
-    driver:"NO OPERATOR",
-    driverStatus:"present",
-    maintenance:"none",
-    status:"working",
-    reason:"",
-    notes:"",
-    lastUpdate:""
-},
-
-{
-    id:86,
-    type:"GENERATORS",
-    number:"GEN09",
-    driver:"NO OPERATOR",
-    driverStatus:"present",
-    maintenance:"none",
-    status:"working",
-    reason:"",
-    notes:"",
-    lastUpdate:""
-},
-
-{
-    
-    id:87,
-    type:"GENERATORS",
-    number:"GEN10",
-    driver:"NO OPERATOR",
-    driverStatus:"present",
-    maintenance:"none",
-    status:"working",
-    reason:"",
-    notes:"",
-    lastUpdate:""
-}
-
-];
   
