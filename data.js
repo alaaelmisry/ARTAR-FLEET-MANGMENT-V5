@@ -767,7 +767,7 @@ const vehicles = [
     reason:"",
     notes:"",
     lastUpdate:""
-}
+},
 
 
   
