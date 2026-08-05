@@ -400,20 +400,7 @@ const vehicles = [
     notes:"",
     lastUpdate:""
 },
-  {
-    id:1,
-    type:"PRIVATE",
-    number:"7983",
-    driver:"ALAA",
-
-    driverStatus:"present",
-    maintenance:"none",
-
-    status:"working",
-    reason:"",
-    notes:"",
-    lastUpdate:""
-},
+  
   /*----------------------------------------
 السيارات المتخصصة
 ----------------------------------------*/
