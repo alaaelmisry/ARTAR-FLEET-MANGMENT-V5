@@ -769,7 +769,6 @@ const vehicles = [
     lastUpdate:""
 }
 
-];
 
   
   /*----------------------------------------
@@ -1002,4 +1001,5 @@ const vehicles = [
     lastUpdate:""
 },
 
-  
+ ];
+ 
