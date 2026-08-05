@@ -656,6 +656,7 @@ const vehicles = [
 },
 
 {
+    
     id:87,
     type:"GENERATORS",
     number:"GEN10",
@@ -667,4 +668,6 @@ const vehicles = [
     notes:"",
     lastUpdate:""
 }
+
+];
   
